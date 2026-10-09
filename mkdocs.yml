@@ -1,0 +1,24 @@
+site_name: Campaign data demo
+site_description: Evaluating DataLad for research campaign data management
+site_url: https://cehbrecht.github.io/campaign-data-demo/
+repo_url: https://github.com/cehbrecht/campaign-data-demo
+repo_name: cehbrecht/campaign-data-demo
+theme:
+  name: material
+  palette:
+    primary: blue grey
+    accent: light blue
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Quickstart: quickstart.md
+  - Planned workflows: workflows.md
+  - IPFS comparison: ipfs-comparison.md
+  - Slides: talks/overview.html
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
