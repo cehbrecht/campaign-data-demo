@@ -1,0 +1,126 @@
+---
+pagetitle: "Campaign data demo: overview"
+---
+
+# Motivation
+
+**Research campaign data management**
+
+- Observations span instruments, teams and storage locations.
+- A campaign release needs an identifiable dataset revision.
+- Large files should be available without copying everything.
+- This demo will evaluate DataLad as an alternative to IPFS.
+
+**Current status:** documentation and publishing foundation only.
+
+# Requirements
+
+- Version campaign datasets and their component datasets.
+- Retrieve selected files and verify their integrity.
+- Record enough provenance to investigate and repeat processing.
+- Discover observations by location and time.
+- Expose management operations through a standard API.
+
+# Why DataLad?
+
+- Git history for dataset structure and small metadata.
+- git-annex for large file content stored outside Git.
+- Subdatasets record component revisions in a parent dataset.
+- DataLad run records connect commands with inputs and outputs.
+
+**To evaluate:** usability, recovery and scale with a realistic campaign.
+
+::: {.notes}
+References: https://docs.datalad.org/en/stable/ and
+https://docs.datalad.org/en/stable/generated/man/datalad-run.html
+:::
+
+# Proposed architecture
+
+| Component | Responsibility |
+| --- | --- |
+| DataLad + Git | Campaign structure, revisions and provenance |
+| git-annex + S3 / MinIO | Large file references and external content storage |
+| STAC | Metadata catalog and asset discovery |
+| pygeoapi | Management operations and execution status |
+
+**All integrations are planned.** The documentation includes the architecture diagram.
+
+# Campaign datasets and subdatasets
+
+```text
+campaign/                 parent dataset
+├── instruments/
+│   ├── radar/            subdataset
+│   └── radiometer/       subdataset
+└── products/             subdataset
+```
+
+- Each subdataset has its own history.
+- The parent records a specific revision of each component.
+- Researchers retrieve only the content they need.
+
+# S3 storage
+
+- Evaluate a git-annex S3 remote with a MinIO endpoint.
+- Keep large file content in object storage and Git history in a Git remote.
+- Keep credentials outside datasets and published metadata.
+- Verify remote copies and recovery before removing local content.
+
+**Planned:** storage configuration and a retrieval demonstration.
+
+::: {.notes}
+Reference: https://git-annex.branchable.com/special_remotes/S3/
+:::
+
+# STAC discovery
+
+- Start with a static catalog of standard Collections and Items.
+- Describe spatial and temporal coverage.
+- Link assets to retrievable data at the intended revision.
+- Resolve authentication and asset URL lifetime before publication.
+
+**Planned:** catalog generation. No custom metadata schema is defined.
+
+::: {.notes}
+Reference: https://stacspec.org/en/about/stac-spec/
+:::
+
+# pygeoapi operations
+
+- Candidate processes: campaign registration, availability checks and catalog refresh.
+- Keep management functions usable independently of the API.
+- Use OGC API Processes for execution results and job status.
+- Choose asynchronous execution only when workflows need it.
+
+**Planned:** process plugins. Continuous monitoring remains a design question.
+
+::: {.notes}
+Reference: https://docs.pygeoapi.io/en/stable/publishing/ogcapi-processes.html
+:::
+
+# DataLad versus IPFS
+
+| Aspect | DataLad + git-annex | IPFS |
+| --- | --- | --- |
+| Identity and history | Git revisions and annex keys | CIDs, with history designed separately |
+| Availability | Copies on configured remotes | Providers retaining or pinning content |
+| Provenance | DataLad run records | Additional tooling or conventions |
+| Discovery | Proposed STAC layer | Discovery layer also needed |
+
+**No benchmark results yet.** Compare the same data and access pattern.
+
+::: {.notes}
+References: https://docs.datalad.org/en/stable/ and
+https://docs.ipfs.tech/concepts/persistence/
+:::
+
+# Next steps
+
+1. Create a small synthetic campaign with two subdatasets.
+2. Demonstrate S3 content retrieval and recovery.
+3. Record one reproducible transformation.
+4. Generate and validate a standard STAC catalog.
+5. Expose one management process and compare with IPFS.
+
+[Project documentation](https://cehbrecht.github.io/campaign-data-demo/)

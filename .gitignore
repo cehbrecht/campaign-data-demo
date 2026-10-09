@@ -218,3 +218,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Generated Quarto presentations (source and configuration stay in Git)
+/docs/talks/
+/talks/.quarto/
+/talks/_freeze/
+/talks/*_files/
+/talks/*.html
+/talks/*.pdf
+/talks/*.tex
+/talks/*.log
+/talks/*.aux
+.DS_Store
